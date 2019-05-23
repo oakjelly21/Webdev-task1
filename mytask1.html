@@ -114,7 +114,7 @@
       mytablebody = mytable.getElementsByTagName("tbody")[0];
       var sum;
       for (i = 1; i < empTab.rows.length; i++) {
-        myrow = mytablebody.getElementsByTagName("tr");[i];
+        myrow = mytablebody.getElementsByTagName("tr")[i];
         mycel = myrow.getElementsByTagName("td")[3];
         myceltext=mycel.childNodes[0];
         sum = sum + myceltext.innerHTML;
