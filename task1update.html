@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>calorie table</title>
+
+    <style>
+        table
+        {
+            width: 70%;
+            font: 17px Calibri;
+        }
+        table, th, td
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body onload="createTable()">
+    <div id ='name'></div>
+    <div id = "age"></div>
+    <div id = "gender"></div>
+    <p>REQIURED CALORIES PER DAY : <div id = "calreq"></div></p>
+    <ps>Click the "Add Meal" button to add a meal to the table. Enter values in each row.</p>
+    <p>
+        <input type="button" id="addRow" value="Add Meal" onclick="addRow()" />
+    </p>
+
+    <div id="cont"></div>
+    <br>
+    <div id="disp"></div>
+    <div id="disp2"></div>
+    <div id ="disp3"></div>
+
+</body>
+
+<script>
+    var sum = 0;
+    var sum2 = 0;
+    var sum3 = 0;
+    var z = 3;
+    var name = prompt("Please enter your name", "<name goes here>");
+    document.getElementById("name").innerHTML = "NAME :"+ name;
+    var age = prompt("Please enter your age", "<age goes here>");
+    document.getElementById("age").innerHTML = "AGE : "+age;
+    var gender = prompt("Please enter your gender", "<gender goes here>");
+    document.getElementById("gender").innerHTML = "GENDER : "+gender;
+    var calreq = 0;
+    if (gender==="MALE"){
+      calreq = 2500;
+      document.getElementById("calreq").innerHTML = "2000-3000";
+    }
+    else {
+      calreq = 2000;
+      document.getElementById("calreq").innerHTML = "1500-2500";
+    }
+    // ARRAY FOR HEADER.
+    var arrHead = new Array();
+    arrHead = ['', 'Food Item', 'Time Eaten', 'Calories'];
+
+
+    function createTable() {
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable');
+
+        var tr = empTable.insertRow(-1);
+
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th');          // TABLE HEADER.
+            th.innerHTML = arrHead[h];
+            tr.appendChild(th);
+        }
+
+        var div = document.getElementById('cont');
+        div.appendChild(empTable);
+    }
+
+    // ADD A NEW ROW TO THE TABLE.s
+    function addRow() {
+        var empTab = document.getElementById('empTable');
+
+        var rowCnt = empTab.rows.length;        // GET TABLE ROW COUNT.
+        //if (z!=3)
+        //  empTab.deleteRow(rowCnt-1);
+        var tr = empTab.insertRow(rowCnt);
+        tr = empTab.insertRow(rowCnt);
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td');          // TABLE DEFINITION.
+            td = tr.insertCell(c);
+
+            if (c == 0) {           // FIRST COLUMN.
+                // ADD A BUTTON.
+                var button = document.createElement('input');
+
+                // SET INPUT ATTRIBUTE.
+                button.setAttribute('type', 'button');
+                button.setAttribute('value', 'Remove');
+
+                // ADD THE BUTTON's 'onclick' EVENT.
+                button.setAttribute('onclick', 'removeRow(this)');
+
+                td.appendChild(button);
+            }
+            else {
+                // CREATE AND ADD TEXTBOX IN EACH CELL.
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'text');
+                ele.setAttribute('value', '');
+                //ele.addEventListener("keyup",check1());
+                //ele.setAttribute('onkeyup','checksum(empTab)');
+                ele.oninput = function(){
+                  sum2 =0;
+                  for(var i = 4;i <=document.getElementsByTagName("input").length;i+=4 ){
+                    var o = document.getElementsByTagName("input")[i].value;
+                    if(Number.isNaN(parseInt(o))){
+                      sum2 += 0;
+                    }
+                    else {
+                      sum2+= parseInt(o);
+                    }
+                  }
+                  document.getElementById("disp2").innerHTML = "Total calories consumed :" + sum2;
+                  if(sum2<(calreq-500)){
+                    document.getElementById("disp3").innerHTML = "You have " + (calreq-(500+sum2)) + " calories to go";
+                  }
+                  else if (sum2>(calreq+500)) {
+                    document.getElementById("disp3").innerHTML = "You have surpassed your daily reqiurements by "+ (sum2-(500+calreq));
+                  }
+                  else {
+                    document.getElementById("disp3").innerHTML = "Congratulations you have met daily requirements";
+                  }
+                };
+                td.appendChild(ele);
+            }
+          }
+          if(z!=3){
+          //  checkSum(empTab);
+          }
+          else {
+            z+=1;
+          }
+    }
+    function checkSum(Tab){
+      sum2 =0;
+      for(var i = 4;i <=document.getElementsByTagName("input").length;i+=4 ){
+        var o = document.getElementsByTagName("input")[i].value;
+        if(Number.isNaN(parseInt(o))){
+          sum2 += 0;
+        }
+        else {
+          sum2+= parseInt(o);
+        }
+      }
+      document.getElementById("disp").innerHTML = sum2;
+      z+=4;
+      //var foot = Tab.createTFoot();
+      //var row = foot.insertRow(0);
+      //var c1 = row.insertCell(0);
+      //c1.colSpan = 3
+      //c1.innerHTML = "sum = " + sum;
+    }
+
+
+//DELETE ROW
+    function removeRow(oButton) {
+        var empTab = document.getElementById('empTable');
+        empTab.deleteRow(oButton.parentNode.parentNode.rowIndex);
+        checksum(empTab);
+    }
+
+
+</script>
+</html>
